@@ -3,6 +3,9 @@ package app.bo.com.ucb.clean22021
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import app.bo.com.ucb.data.MoviesRepository
 import app.bo.com.ucb.domain.Movie
 import app.bo.com.ucb.framework.MovieDataSource
@@ -11,9 +14,17 @@ import app.bo.com.ucb.usecases.GetPopularMovies
 
 class MainActivity : AppCompatActivity() {
     lateinit var mainViewModel: MainViewModel
+    lateinit var recyclerView: RecyclerView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        recyclerView = findViewById(R.id.rv_movies)
+        val layoutManager = GridLayoutManager(this, 3)
+        layoutManager.orientation = LinearLayoutManager.VERTICAL
+        recyclerView.layoutManager = layoutManager
+
         mainViewModel = MainViewModel(GetPopularMovies( MoviesRepository( MovieDataSource( RetrofitBuilder) ), getString(R.string.api_key)) )
 
         mainViewModel.model.observe(this, Observer(:: updateUi))
@@ -27,6 +38,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun loadList( list: List<Movie>) {
-        // recycler.adapter = AdapterMainViewModel( list)
+        recyclerView.adapter = MainAdapter(list, this)
     }
 }
