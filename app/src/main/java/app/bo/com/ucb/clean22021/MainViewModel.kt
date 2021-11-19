@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import app.bo.com.ucb.domain.Movie
 import app.bo.com.ucb.usecases.GetPopularMovies
+import kotlinx.coroutines.launch
 
 class MainViewModel(val popularMovies: GetPopularMovies): ScopedViewMode() {
     init {
@@ -20,7 +21,10 @@ class MainViewModel(val popularMovies: GetPopularMovies): ScopedViewMode() {
     }
 
     fun loadMovies() {
-        _model.value = UiModel.Content(popularMovies.invoke())
+        launch {
+            _model.value = UiModel.Content(popularMovies.invoke())
+        }
+
     }
 
 }
