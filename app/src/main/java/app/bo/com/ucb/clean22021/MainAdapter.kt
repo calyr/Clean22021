@@ -11,12 +11,11 @@ import androidx.recyclerview.widget.RecyclerView
 import app.bo.com.ucb.domain.Movie
 import com.squareup.picasso.Picasso
 
-class MainAdapter(val list: List<Movie>, val context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MainAdapter(val list: List<Movie>, val context: Context, val itemClickListener: ItemClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.movie_row, parent, false)
         return MainViewHolder(view)
     }
-
     class MainViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -24,10 +23,16 @@ class MainAdapter(val list: List<Movie>, val context: Context) : RecyclerView.Ad
         holder.itemView.findViewById<TextView>(R.id.tv_movie_title).text = movie.title
         Picasso.get().load("https://image.tmdb.org/t/p/w185/${movie.posterPath}")
             .into(holder.itemView.findViewById<ImageView>(R.id.img_movie))
+        holder.itemView.setOnClickListener {
+            itemClickListener.onItemClickListener(movie)
+        }
     }
 
     override fun getItemCount(): Int {
         return list.size
     }
 
+
 }
+
+

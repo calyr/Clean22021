@@ -2,6 +2,7 @@ package app.bo.com.ucb.clean22021
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,7 +15,7 @@ import app.bo.com.ucb.usecases.GetPopularMovies
 import org.koin.android.scope.currentScope
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ItemClickListener{
     private val mainViewModel: MainViewModel by currentScope.viewModel(this)
     lateinit var recyclerView: RecyclerView
 
@@ -40,6 +41,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun loadList( list: List<Movie>) {
-        recyclerView.adapter = MainAdapter(list, this)
+        recyclerView.adapter = MainAdapter(list, this, this)
+    }
+
+
+    override fun onItemClickListener( movie: Movie) {
+        Toast.makeText(this, movie.title, Toast.LENGTH_LONG).show()
     }
 }
